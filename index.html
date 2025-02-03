@@ -1,0 +1,748 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>ESLint for React + Vite Projects</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-transparentGray { background-color: rgba(227, 226, 224, 0); }
+.select-value-color-translucentGray { background-color: rgba(0, 0, 0, 0.06); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="18f4cc74-3d8b-8036-99bf-f04435ae0317" class="page sans"><header><h1 class="page-title">ESLint for React + Vite Projects</h1><p class="page-description"></p></header><div class="page-body"><p id="18f4cc74-3d8b-805e-b3a0-fbe6d84a5052" class="">
+</p><p id="18f4cc74-3d8b-8095-8a61-fb9bb4cbd53c" class="">This guide provides a comprehensive setup for ESLint in a React + Vite project, ensuring code quality and adherence to best practices.</p><h2 id="18f4cc74-3d8b-801b-b695-f3b9c17607db" class="">What is ESLint?</h2><p id="18f4cc74-3d8b-80bf-aeea-def29a47ddef" class="">ESLint is a popular linting tool for JavaScript and TypeScript. It helps developers find and fix problems in their code, ensuring consistency and maintainability.</p><h2 id="18f4cc74-3d8b-803a-8502-d8e34c5a07ea" class="">Installation</h2><h3 id="18f4cc74-3d8b-800b-bfdb-d1a3e328ce0e" class=""><strong>Prerequisites</strong></h3><ul id="18f4cc74-3d8b-808c-8511-e81b33b16882" class="bulleted-list"><li style="list-style-type:disc">Node.js and npm installed.</li></ul><ul id="18f4cc74-3d8b-80b0-955f-ed14d399d3dd" class="bulleted-list"><li style="list-style-type:disc">A React + Vite project initialized.</li></ul><h3 id="18f4cc74-3d8b-80c9-8c6e-d8e3f03afda6" class="">Steps to Install ESLint</h3><ol type="1" id="18f4cc74-3d8b-80f4-b8f7-eb8a1cc1281e" class="numbered-list" start="1"><li>Navigate to your project directory:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="18f4cc74-3d8b-80a8-b309-d4e0a7180afe" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">cd /path/to/your/project
+</code></pre></li></ol><ol type="1" id="18f4cc74-3d8b-809d-bc23-f78421b5d4c1" class="numbered-list" start="2"><li>Install ESLint and related plugins:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="18f4cc74-3d8b-802b-8c53-c3b956d7364b" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">npm install eslint eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y @typescript-eslint/parser @typescript-eslint/eslint-plugin --save-dev
+</code></pre></li></ol><h2 id="18f4cc74-3d8b-801a-9742-e277f2552b88" class="">Initial Setup</h2><h3 id="18f4cc74-3d8b-8004-a529-f3b266aaf713" class="">Creating an ESLint Configuration File</h3><ol type="1" id="18f4cc74-3d8b-80f4-8ec2-ec3d20a984d0" class="numbered-list" start="1"><li>Run the ESLint initialization command:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="18f4cc74-3d8b-8066-b7d6-f6760c7a7b80" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">npx eslint --init
+</code></pre></li></ol><ol type="1" id="18f4cc74-3d8b-8008-bd27-fad9ec394828" class="numbered-list" start="2"><li>Answer the prompts to customize ESLint:<ul id="18f4cc74-3d8b-808f-915e-e8ea3cc03a2a" class="bulleted-list"><li style="list-style-type:disc">Select &quot;To check syntax, find problems, and enforce code style.&quot;</li></ul><ul id="18f4cc74-3d8b-80e4-9b27-fe202e2d96eb" class="bulleted-list"><li style="list-style-type:disc">Choose the type of project: &quot;React&quot;</li></ul><ul id="18f4cc74-3d8b-8017-8496-dc63f0c92635" class="bulleted-list"><li style="list-style-type:disc">Select JavaScript or TypeScript accordingly.</li></ul><ul id="18f4cc74-3d8b-80b8-901a-fec73e067c22" class="bulleted-list"><li style="list-style-type:disc">Enable modules and browser environments.</li></ul><ul id="18f4cc74-3d8b-8026-a8a1-c6808f71cdee" class="bulleted-list"><li style="list-style-type:disc">Choose &quot;JSON&quot; or &quot;YAML&quot; for configuration file format.</li></ul></li></ol><h3 id="18f4cc74-3d8b-8050-ad39-e148f41b8112" class="">Example Configuration (<code>.eslintrc.json</code>)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="18f4cc74-3d8b-8097-a8ea-d1c3b2f910a4" class="code"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">{
+  &quot;env&quot;: {
+    &quot;browser&quot;: true,
+    &quot;es2021&quot;: true
+  },
+  &quot;extends&quot;: [
+    &quot;eslint:recommended&quot;,
+    &quot;plugin:react/recommended&quot;,
+    &quot;plugin:react-hooks/recommended&quot;,
+    &quot;plugin:jsx-a11y/recommended&quot;,
+    &quot;plugin:@typescript-eslint/recommended&quot;
+  ],
+  &quot;parser&quot;: &quot;@typescript-eslint/parser&quot;,
+  &quot;parserOptions&quot;: {
+    &quot;ecmaVersion&quot;: 12,
+    &quot;sourceType&quot;: &quot;module&quot;
+  },
+  &quot;plugins&quot;: [&quot;react&quot;, &quot;react-hooks&quot;, &quot;jsx-a11y&quot;, &quot;@typescript-eslint&quot;],
+  &quot;rules&quot;: {
+    &quot;react/prop-types&quot;: &quot;off&quot;,
+    &quot;react/react-in-jsx-scope&quot;: &quot;off&quot;,
+    &quot;@typescript-eslint/no-unused-vars&quot;: [&quot;warn&quot;],
+    &quot;indent&quot;: [&quot;error&quot;, 2],
+    &quot;quotes&quot;: [&quot;error&quot;, &quot;double&quot;],
+    &quot;semi&quot;: [&quot;error&quot;, &quot;always&quot;],
+    &quot;eqeqeq&quot;: [&quot;error&quot;, &quot;always&quot;],
+    &quot;no-console&quot;: &quot;warn&quot;,
+    &quot;no-debugger&quot;: &quot;error&quot;
+  }
+}
+</code></pre><h2 id="18f4cc74-3d8b-8021-a95b-eea9630b1fd5" class="">Updating Files</h2><h3 id="18f4cc74-3d8b-8040-93ab-cb25b1a4241e" class=""><strong>Adding ESLint to </strong><code><strong>package.json</strong></code></h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="18f4cc74-3d8b-8055-9fea-f34a0d7c8637" class="code"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all"> &quot;scripts&quot;: {
+    &quot;dev&quot;: &quot;vite&quot;,
+    &quot;build&quot;: &quot;vite build&quot;,
+    &quot;serve&quot;: &quot;vite preview&quot;,
+    &quot;lint&quot;: &quot;eslint .&quot;,
+    &quot;lint:fix&quot;: &quot;eslint . --fix&quot;
+  }
+</code></pre><h3 id="18f4cc74-3d8b-8090-ad36-e32d3720856b" class=""><strong>Ignoring Files with </strong><code><strong>.eslintignore</strong></code></h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="18f4cc74-3d8b-8030-a943-c54c9b2c5915" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">node_modules/
+dist/
+build/
+.vite/
+</code></pre><h2 id="18f4cc74-3d8b-8040-85c0-e22dbf20d0c8" class="">Configuring Rules</h2><h3 id="18f4cc74-3d8b-8022-a895-f8de19ec80a8" class="">Example Rule Adjustments</h3><ul id="18f4cc74-3d8b-800e-bb72-c478482a886d" class="bulleted-list"><li style="list-style-type:disc"><strong>Warning for console.log usage</strong></li></ul><ul id="18f4cc74-3d8b-804f-b69c-fedc41c14dc6" class="bulleted-list"><li style="list-style-type:disc"><strong>Enforce strict equality</strong></li></ul><ul id="18f4cc74-3d8b-80e3-9a24-e9cde46ef208" class="bulleted-list"><li style="list-style-type:disc"><strong>Require consistent indentation and semicolons</strong></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="18f4cc74-3d8b-8010-9df4-e25814b03d61" class="code"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">&quot;rules&quot;: {
+    &quot;no-console&quot;: &quot;warn&quot;,
+    &quot;no-debugger&quot;: &quot;error&quot;,
+    &quot;indent&quot;: [&quot;error&quot;, 2],
+    &quot;semi&quot;: [&quot;error&quot;, &quot;always&quot;],
+    &quot;eqeqeq&quot;: [&quot;error&quot;, &quot;always&quot;]
+}
+</code></pre><h2 id="18f4cc74-3d8b-80e1-bde5-fa8f2b7162ef" class="">Using ESLint</h2><h3 id="18f4cc74-3d8b-80eb-af6c-d5f6ca89c776" class="">Linting Files</h3><p id="18f4cc74-3d8b-80b4-99ba-e6ae8744a67e" class="">To check your code for linting issues:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="18f4cc74-3d8b-806b-a2ca-f813e6699d8a" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">npm run lint
+</code></pre><h3 id="18f4cc74-3d8b-80e7-aba0-cbbf3843b48a" class="">Auto-fixing Issues</h3><p id="18f4cc74-3d8b-805a-9387-fda8f6c29e92" class="">To automatically fix issues where possible:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="18f4cc74-3d8b-806d-8f62-e07771db5984" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">npm run lint:fix
+</code></pre><h2 id="18f4cc74-3d8b-806d-ba6f-c2acaf948ee4" class="">Integrations</h2><h3 id="18f4cc74-3d8b-8017-a8db-f83946c3e231" class="">VS Code Setup</h3><ol type="1" id="18f4cc74-3d8b-80d7-a288-d1bd39693d2b" class="numbered-list" start="1"><li>Install the &quot;ESLint&quot; extension from the VS Code marketplace.</li></ol><ol type="1" id="18f4cc74-3d8b-80ec-9749-ca6fed2ca945" class="numbered-list" start="2"><li>Enable &quot;Auto Fix On Save&quot; in VS Code settings:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="18f4cc74-3d8b-801c-be98-fa4d8b6f2a51" class="code"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">&quot;editor.codeActionsOnSave&quot;: {
+  &quot;source.fixAll.eslint&quot;: true
+}
+</code></pre></li></ol><h3 id="18f4cc74-3d8b-8067-a6d6-f9cd4fa42852" class="">Prettier Integration</h3><p id="18f4cc74-3d8b-80e9-8e19-eae9d572e280" class="">If using Prettier, install and configure <code>eslint-config-prettier</code>:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="18f4cc74-3d8b-80ff-b570-d83f105df294" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">npm install eslint-config-prettier --save-dev
+</code></pre><p id="18f4cc74-3d8b-8062-a88f-dea410b9c29a" class="">Add it to your <code>.eslintrc.json</code> file:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="18f4cc74-3d8b-80d9-b341-d03e4a62fc88" class="code"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">&quot;extends&quot;: [
+  &quot;eslint:recommended&quot;,
+  &quot;plugin:react/recommended&quot;,
+  &quot;prettier&quot;
+]
+</code></pre><h2 id="18f4cc74-3d8b-8006-a664-e498365245f9" class="">Common Rules</h2><table id="18f4cc74-3d8b-8056-8467-fda05c3fd1b4" class="simple-table"><tbody><tr id="18f4cc74-3d8b-8012-b555-c23bd6cbea71"><td id="~y@p" class=""><strong>Rule Name</strong></td><td id="z|Po" class=""><strong>Description</strong></td><td id="~F_;" class=""><strong>Level</strong></td><td id="d|iq" class=""><strong>Example</strong></td></tr><tr id="18f4cc74-3d8b-80ca-9e99-c193c72676d4"><td id="~y@p" class=""><code>semi</code></td><td id="z|Po" class="">Enforce semicolons</td><td id="~F_;" class="">Error</td><td id="d|iq" class=""><code>const x = 5;</code></td></tr><tr id="18f4cc74-3d8b-80b1-a63a-ee85756eb7e2"><td id="~y@p" class=""><code>quotes</code></td><td id="z|Po" class="">Use consistent double quotes</td><td id="~F_;" class="">Error</td><td id="d|iq" class=""><code>const a = &quot;hello&quot;;</code></td></tr><tr id="18f4cc74-3d8b-80dd-a8d7-f4ef2a6215a4"><td id="~y@p" class=""><code>eqeqeq</code></td><td id="z|Po" class="">Require <code>===</code> instead of <code>==</code></td><td id="~F_;" class="">Error</td><td id="d|iq" class=""><code>if (x === 5) {}</code></td></tr><tr id="18f4cc74-3d8b-8040-8ea0-f74752b0b759"><td id="~y@p" class=""><code>no-console</code></td><td id="z|Po" class="">Warns about <code>console</code> statements</td><td id="~F_;" class="">Warning</td><td id="d|iq" class=""><code>console.log(&quot;Debug&quot;);</code></td></tr><tr id="18f4cc74-3d8b-80bb-b0dd-f3484427369c"><td id="~y@p" class=""><code>no-debugger</code></td><td id="z|Po" class="">Disallows <code>debugger</code></td><td id="~F_;" class="">Error</td><td id="d|iq" class=""><code>debugger;</code></td></tr><tr id="18f4cc74-3d8b-804b-84d2-e5d746f1581e"><td id="~y@p" class=""><code>react/react-in-jsx-scope</code></td><td id="z|Po" class="">Not needed in Vite</td><td id="~F_;" class="">Off</td><td id="d|iq" class=""><code>import React from &quot;react&quot;;</code></td></tr><tr id="18f4cc74-3d8b-80c6-92d6-f2c092268150"><td id="~y@p" class=""><code>indent</code></td><td id="z|Po" class="">Enforces consistent indentation (2 spaces)</td><td id="~F_;" class="">Error</td><td id="d|iq" class=""><code>function greet() {\n  console.log(&quot;Hi!&quot;);\n}</code></td></tr></tbody></table><p id="18f4cc74-3d8b-8037-a79e-ffac9e420863" class="">For a complete list of rules, visit the <a href="https://eslint.org/docs/rules/">ESLint documentation</a>.</p><h2 id="18f4cc74-3d8b-802b-98dc-eb40f184a4f1" class="">Best Practices</h2><ul id="18f4cc74-3d8b-8016-8af1-e39568064650" class="bulleted-list"><li style="list-style-type:disc">Always lint your code before committing changes.</li></ul><ul id="18f4cc74-3d8b-8037-ba1d-c7d3e6475401" class="bulleted-list"><li style="list-style-type:disc">Use <code>lint:fix</code> to automatically resolve minor issues.</li></ul><ul id="18f4cc74-3d8b-80ef-8e76-c32e2cbb05cb" class="bulleted-list"><li style="list-style-type:disc">Keep your <code>.eslintrc.json</code> file consistent across projects.</li></ul><ul id="18f4cc74-3d8b-8019-87df-ca1c6b7e27df" class="bulleted-list"><li style="list-style-type:disc">Periodically review and update ESLint settings to align with modern best practices.</li></ul><hr id="18f4cc74-3d8b-809b-b261-d7026d9eaffa"/><p id="18f4cc74-3d8b-8008-aedd-df4d6a446653" class=""><strong>Company Name:</strong> Endless Raven</p><p id="18f4cc74-3d8b-80a3-b74d-fb70f8a6a9ca" class=""><strong>Writer:</strong> Pasith Senevirathna</p><p id="18f4cc74-3d8b-8034-aca4-f2ffae6a521d" class=""><strong>Position:</strong> Backend Developer and DevOps</p><p id="18f4cc74-3d8b-80f6-90ef-e42706f2b7a9" class=""><strong>Contact Email:</strong> <a href="mailto:pasith.senevi02@gmail.com">pasith.senevi02@gmail.com</a></p><p id="18f4cc74-3d8b-8056-95f2-cf6de4c00b96" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
